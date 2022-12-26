@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  ddns-ddnss:
+    # build:
+      # dockerfile: ./Dockerfile
+    image: alcapone1933/ddns-ddnss:latest
+    # image: alcapone1933/ddns-ddnss:v0.0.1
+    container_name: ddns-ddnss
+    restart: always
+    # volumes:
+      # - data:/data
+    environment:
+      - "TZ=Europe/Berlin"
+      - "CRON_TIME=*/15 * * * *"
+      - "CRON_TIME_DIG=*/30 * * * *"
+      - "DOMAIN_DDNSS=deine-domain.ddnss.de"
+      # - "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org"
+      - "DOMAIN_KEY=1234567890abcdefghijklmnopqrstuv"
+
+# volumes:
+  # data:
+    # name: ddns-ddnss_data
