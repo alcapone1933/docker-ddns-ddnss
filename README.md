@@ -57,6 +57,7 @@ docker run -d \
     alcapone1933/ddns-ddnss:latest
 
     -e "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org" \
+    -e "SHOUTRRR_URL=" \
 ```
 
 ## Docker Compose
@@ -70,16 +71,13 @@ services:
     restart: always
     environment:
       - "TZ=Europe/Berlin"
-      # Standard Abfrage alle 15 Minuten nach der aktuellen ip
       - "CRON_TIME=*/15 * * * *"
-      # Standard Abfrage alle 30 Minuten für die Domain Adresse
       - "CRON_TIME_DIG=*/30 * * * *"
-      #  Hier bitte deine DOMAIN (vHostname) eintragen (ersetzen), die unter https://ddnss.de/ua/vhosts_list.php erstellt wurde, z.B "deine-domain.ddnss.de"
       - "DOMAIN_DDNSS=deine-domain.ddnss.de"
       #  Wenn Du mehrere DOMAINS (vHostname) eintragen willst, bitte mit Komma trennen:
       # - "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org"
-      # Hier bitte dein KEY bzw. DynDNS Update Key eintragen (ersetzen). Zu finden ist dieser unter https://ddnss.de/ua/index.php z.B "1234567890abcdefghijklmnopqrstuv"
       - "DOMAIN_KEY=1234567890abcdefghijklmnopqrstuv"
+      # - "SHOUTRRR_URL="
 ```
 
 &nbsp;
@@ -97,14 +95,56 @@ services:
 
 ## Env Parameter
 
-| Name (Beschreibung)                                                                           | Wert          | Standard           | Beispiel                                     |
-| --------------------------------------------------------------------------------------------- | ------------- | ------------------ | -------------------------------------------- |
-| Zeitzone                                                                                      | TZ            | Europe/Berlin      | Europe/Berlin                                |
-| Zeitliche Abfrage für die aktuelle IP                                                         | CRON_TIME     | */15 * * * *       | */15 * * * *                                 |
-| Zeitliche Abfrage auf die Domain (dig DOMAIN_DDNSS A)                                         | CRON_TIME_DIG | */30 * * * *       | */30 * * * *                                 |
-| DOMAIN KEY: DEIN KEY bzw. DynDNS Update Key zu finden unter     https://ddnss.de/ua/index.php | DOMAIN_KEY    | ------------------ | 1234567890abcdefghijklmnopqrstuv             |
-| DEINE DOMAIN:  z.b. deine-domain.ddnss.de zu finden unter https://ddnss.de/ua/vhosts_list.php | DOMAIN_DDNSS  | ------------------ | deine-domain.ddnss.de                        |
-| DEINE DOMAINS: z.b. deine-domain.ddnss.de,deine-domain.ddnss.org                              | DOMAIN_DDNSS  | ------------------ | deine-domain.ddnss.de,deine-domain.ddnss.org |
+| Name (Beschreibung)                                                                               | Wert          | Standard           | Beispiel                                     |
+| ------------------------------------------------------------------------------------------------- | ------------- | ------------------ | -------------------------------------------- |
+| Zeitzone                                                                                          | TZ            | Europe/Berlin      | Europe/Berlin                                |
+| Zeitliche Abfrage für die aktuelle IP                                                             | CRON_TIME     | */15 * * * *       | */15 * * * *                                 |
+| Zeitliche Abfrage auf die Domain (dig DOMAIN_DDNSS A)                                             | CRON_TIME_DIG | */30 * * * *       | */30 * * * *                                 |
+| DOMAIN KEY: DEIN KEY bzw. DynDNS Update Key zu finden unter     https://ddnss.de/ua/index.php     | DOMAIN_KEY    | ------------------ | 1234567890abcdefghijklmnopqrstuv             |
+| DEINE DOMAIN:  z.b. deine-domain.ddnss.de zu finden unter https://ddnss.de/ua/vhosts_list.php     | DOMAIN_DDNSS  | ------------------ | deine-domain.ddnss.de                        |
+| DEINE DOMAINS: z.b. deine-domain.ddnss.de,deine-domain.ddnss.org                                  | DOMAIN_DDNSS  | ------------------ | deine-domain.ddnss.de,deine-domain.ddnss.org |
+| SHOUTRRR URL: Deine Shoutrrr URL als Benachrichtigungsdienst z.b ( gotify,discord,telegram,email) | SHOUTRRR_URL  | ------------------ | [Shoutrrr-Beispiele](#shoutrrr-beispiele)    |
 
 * * *
 
+&nbsp;
+
+## Shoutrrr Beispiele
+
+Die Nachricht wird fest vom Script erstellt. \
+Sie können den Betreff (titel) frei wählen wie im Beispiel genannt. \
+So könnte die Nachricht ausehen.
+
+```txt
+Betreff:   DDNS DDNSS.DE IP UPDATE
+# Die Nachricht wird fest vom Script
+Nachricht: DOCKER DDNS UPDATER DDNSS.DE - IP UPDATE !!!
+           DATUM  UPDATE !!! 
+           Update IP=IP - Alte-IP=IP
+           DOMAIN: DOMAIN
+
+----------------------------------------------------------
+Nachricht: DOCKER DDNS UPDATER DDNSS.DE - IP UPDATE !!!
+           2023-01-01 08:01:00  UPDATE !!!
+           Update IP=1.0.0.1 - Alte-IP=1.1.1.1
+           DOMAIN: deine-domain.ddnss.de
+
+```
+
+Das sind Beispiele für Shoutrrr als Benachrichtigungsdienst, für weitere Services infos fidetest du hier [Shoutrrr](https://containrrr.dev/shoutrrr/latest/services/overview/)
+
+| Service Name | URL Beispiel                                                                                      |
+| ------------ | ------------------------------------------------------------------------------------------------- |
+| gotify       | `gotify://<url domain.de>/<token>/?title=<title>&priority=<priority>`                             |
+| discord      | `discord://<token>@<webhook id>?title=<title>`                                                    |
+| telegram     | `telegram://<token>@telegram/?chats=<chad_id>&title=<title>`                                      |
+| smtp (email) | `smtp://<username>:<password>@<host>:<port>/?from=<sender_email>&to=<to_email>&subject=<subject>` |
+
+| Service Name | URL Beispiel (Beispiel text)                                                                                                     |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| gotify       | `gotify://domain.de/123456abc/?title=DDNS DDNSS.DE IP UPDATE&priority=5`                                                         |
+| discord      | `discord://123456abc@555555555555555?title=DDNS DDNSS.DE IP UPDATE`                                                              |
+| telegram     | `telegram://1111111111:123456abc@telegram/?chats=5555555555&title=DDNS DDNSS.DE IP UPDATE`                                       |
+| smtp (email) | `smtp://noreply@domain.de:password@mail.domain.de:587/?from=noreply@domain.de&to=user@domain.de&subject=DDNS DDNSS.DE IP UPDATE` |
+
+* * *
