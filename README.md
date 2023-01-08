@@ -147,4 +147,33 @@ Das sind Beispiele für Shoutrrr als Benachrichtigungsdienst, für weitere Servi
 | telegram     | `telegram://1111111111:123456abc@telegram/?chats=5555555555&title=DDNS DDNSS.DE IP UPDATE`                                       |
 | smtp (email) | `smtp://noreply@domain.de:password@mail.domain.de:587/?from=noreply@domain.de&to=user@domain.de&subject=DDNS DDNSS.DE IP UPDATE` |
 
+&nbsp;
+
+### Du kannst die Shoutrrr URL auch generieren lassen
+
+```bash
+# $ docker run --rm -it alcapone1933/shoutrrr generate
+#Error: no service specified
+#Usage:
+#  shoutrrr generate [flags]
+#
+#Flags:
+#  -g, --generator string       The generator to use (default "basic")
+#  -h, --help                   help for generate
+#  -p, --property stringArray   Configuration property in key=value format
+#  -s, --service string         The notification service to generate a URL for
+#
+#Available services:
+#  opsgenie, slack, teams, generic, googlechat, join, bark, logger, matrix, discord, mattermost, rocketchat, pushbullet, pushover, smtp, telegram, zulip, gotify, hangouts, ifttt
+
+# docker run --rm -it alcapone1933/shoutrrr generate gotify
+
+docker run --rm -it alcapone1933/shoutrrr generate
+
+# TEST
+# $ docker run --rm -it alcapone1933/shoutrrr send --verbose --url "< Shoutrrr URL >" --message "DOCKER DDNS UPDATER IPV64.NET"
+
+docker run --rm -it alcapone1933/shoutrrr send --verbose --url "< Shoutrrr URL >" --message "DOCKER DDNS UPDATER DDNSS.DE"
+```
+
 * * *
