@@ -84,7 +84,7 @@ if [ -z "${SHOUTRRR_URL:-}" ] ; then
     echo "$DATUM  SHOUTRRR    - Sie haben keine SHOUTRRR URL gesetzt"
 else
     echo "$DATUM  SHOUTRRR    - Sie haben eine  SHOUTRRR URL gesetzt"
-    if ! /usr/local/bin/shoutrrr send --url "${SHOUTRRR_URL}" --message "`echo -e "$DATUM  TEST !!! \nDDNS Updater in Docker fuer Free DynDNS IPv64.net"`" 2> /dev/null; then
+    if ! /usr/local/bin/shoutrrr send --url "${SHOUTRRR_URL}" --message "`echo -e "$DATUM  TEST !!! \nDDNS Updater in Docker fuer Free DynDNS DDNSS.DE"`" 2> /dev/null; then
         echo "$DATUM  FEHLER !!!  - Die Angaben sind falsch  gesetzt: SHOUTRRR URL"
         echo "$DATUM    INFO !!!  - Schaue unter https://containrrr.dev/shoutrrr/ nach dem richtigen URL Format"
         echo "$DATUM    INFO !!!  - Stoppen sie den Container und Starten sie den Container mit den richtigen Angaben erneut"
