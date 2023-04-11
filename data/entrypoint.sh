@@ -102,7 +102,11 @@ CHECK=$(curl -4sSLi --user-agent "${CURL_USER_AGENT}" "https://ddnss.de/upd.php?
 if [ "$CHECK" = "good" ] ; then
     echo "$DATUM  CHECK       - Die Angaben sind richtig gesetzt: DOMAIN und DOMAIN KEY"
     sleep 5
-    for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "$DATUM  IP CHECK    - Deine DOMAIN ${DOMAIN} HAT DIE IP=`dig +short ${DOMAIN} A @ns1.ddnss.de`"; done
+    if [[ "$IP_CHECK" =~ (YES|yes|Yes) ]] ; then
+        for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "$DATUM  IP CHECK    - Deine DOMAIN ${DOMAIN} HAT DIE IP=`dig +short ${DOMAIN} A @ns1.ddnss.de`"; done
+    else
+        echo > /dev/null
+    fi   
     echo "${IP}" > /data/updip.txt
     sleep 2
 else
@@ -111,7 +115,11 @@ else
     return
 fi
 echo "${CRON_TIME} /bin/bash /data/ddns-update.sh >> /var/log/cron.log 2>&1" > /etc/cron.d/container_cronjob
-echo "${CRON_TIME_DIG} sleep 20 && /bin/bash /data/domain-ip-scheck.sh >> /var/log/cron.log 2>&1" >> /etc/cron.d/container_cronjob
+if [[ "$IP_CHECK" =~ (YES|yes|Yes) ]] ; then
+    echo "${CRON_TIME_DIG} sleep 20 && /bin/bash /data/domain-ip-scheck.sh >> /var/log/cron.log 2>&1" >> /etc/cron.d/container_cronjob
+else
+    echo > /dev/null
+fi
 # echo "$CRON_TIME_DIG" 'sleep 20 && for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "`date +%Y-%m-%d\ %H:%M:%S`  IP CHECK    - Deine DOMAIN ${DOMAIN} HAT DIE IP=`dig +short ${DOMAIN} A @ns1.ddnss.de`" >> /var/log/cron.log 2>&1; done' >> /etc/cron.d/container_cronjob
 }
 
