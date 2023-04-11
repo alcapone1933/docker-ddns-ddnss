@@ -4,7 +4,7 @@ services:
     # build:
       # dockerfile: ./Dockerfile
     image: alcapone1933/ddns-ddnss:latest
-    # image: alcapone1933/ddns-ddnss:v0.0.2
+    # image: alcapone1933/ddns-ddnss:v0.0.3
     container_name: ddns-ddnss
     restart: always
     # volumes:
@@ -16,6 +16,7 @@ services:
       - "DOMAIN_DDNSS=deine-domain.ddnss.de"
       # - "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org"
       - "DOMAIN_KEY=1234567890abcdefghijklmnopqrstuv"
+      - "IP_CHECK=Yes"
       # - "SHOUTRRR_URL="
 
 # volumes:

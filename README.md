@@ -103,6 +103,7 @@ services:
 | DOMAIN KEY: DEIN KEY bzw. DynDNS Update Key zu finden unter     https://ddnss.de/ua/index.php     | DOMAIN_KEY    | ------------------ | 1234567890abcdefghijklmnopqrstuv             |
 | DEINE DOMAIN:  z.b. deine-domain.ddnss.de zu finden unter https://ddnss.de/ua/vhosts_list.php     | DOMAIN_DDNSS  | ------------------ | deine-domain.ddnss.de                        |
 | DEINE DOMAINS: z.b. deine-domain.ddnss.de,deine-domain.ddnss.org                                  | DOMAIN_DDNSS  | ------------------ | deine-domain.ddnss.de,deine-domain.ddnss.org |
+| IP CHECK: Die IP Adresse der Domain wird überprüft                                                | IP_CHECK      | Yes                | Yes                                          |
 | SHOUTRRR URL: Deine Shoutrrr URL als Benachrichtigungsdienst z.b ( gotify,discord,telegram,email) | SHOUTRRR_URL  | ------------------ | [Shoutrrr-Beispiele](#shoutrrr-beispiele)    |
 
 * * *
