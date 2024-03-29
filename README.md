@@ -58,6 +58,8 @@ docker run -d \
 
     -e "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org" \
     -e "SHOUTRRR_URL=" \
+    -e "SHOUTRRR_SKIP_TEST=no" \
+
 ```
 
 ## Docker Compose
@@ -78,6 +80,7 @@ services:
       # - "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org"
       - "DOMAIN_KEY=1234567890abcdefghijklmnopqrstuv"
       # - "SHOUTRRR_URL="
+      # - "SHOUTRRR_SKIP_TEST=no"
 ```
 
 &nbsp;
@@ -95,16 +98,17 @@ services:
 
 ## Env Parameter
 
-| Name (Beschreibung)                                                                               | Wert          | Standard           | Beispiel                                     |
-| ------------------------------------------------------------------------------------------------- | ------------- | ------------------ | -------------------------------------------- |
-| Zeitzone                                                                                          | TZ            | Europe/Berlin      | Europe/Berlin                                |
-| Zeitliche Abfrage für die aktuelle IP                                                             | CRON_TIME     | */15 * * * *       | */15 * * * *                                 |
-| Zeitliche Abfrage auf die Domain (dig DOMAIN_DDNSS A)                                             | CRON_TIME_DIG | */30 * * * *       | */30 * * * *                                 |
-| DOMAIN KEY: DEIN KEY bzw. DynDNS Update Key zu finden unter     https://ddnss.de/ua/index.php     | DOMAIN_KEY    | ------------------ | 1234567890abcdefghijklmnopqrstuv             |
-| DEINE DOMAIN:  z.b. deine-domain.ddnss.de zu finden unter https://ddnss.de/ua/vhosts_list.php     | DOMAIN_DDNSS  | ------------------ | deine-domain.ddnss.de                        |
-| DEINE DOMAINS: z.b. deine-domain.ddnss.de,deine-domain.ddnss.org                                  | DOMAIN_DDNSS  | ------------------ | deine-domain.ddnss.de,deine-domain.ddnss.org |
-| IP CHECK: Die IP Adresse der Domain wird überprüft                                                | IP_CHECK      | Yes                | Yes                                          |
-| SHOUTRRR URL: Deine Shoutrrr URL als Benachrichtigungsdienst z.b ( gotify,discord,telegram,email) | SHOUTRRR_URL  | ------------------ | [Shoutrrr-Beispiele](#shoutrrr-beispiele)    |
+| Name (Beschreibung)                                                                               | Wert               | Standard           | Beispiel                                     |
+| ------------------------------------------------------------------------------------------------- | ------------------ | ------------------ | -------------------------------------------- |
+| Zeitzone                                                                                          | TZ                 | Europe/Berlin      | Europe/Berlin                                |
+| Zeitliche Abfrage für die aktuelle IP                                                             | CRON_TIME          | */15 * * * *       | */15 * * * *                                 |
+| Zeitliche Abfrage auf die Domain (dig DOMAIN_DDNSS A)                                             | CRON_TIME_DIG      | */30 * * * *       | */30 * * * *                                 |
+| DOMAIN KEY: DEIN KEY bzw. DynDNS Update Key zu finden unter     https://ddnss.de/ua/index.php     | DOMAIN_KEY         | ------------------ | 1234567890abcdefghijklmnopqrstuv             |
+| DEINE DOMAIN:  z.b. deine-domain.ddnss.de zu finden unter https://ddnss.de/ua/vhosts_list.php     | DOMAIN_DDNSS       | ------------------ | deine-domain.ddnss.de                        |
+| DEINE DOMAINS: z.b. deine-domain.ddnss.de,deine-domain.ddnss.org                                  | DOMAIN_DDNSS       | ------------------ | deine-domain.ddnss.de,deine-domain.ddnss.org |
+| IP CHECK: Die IP Adresse der Domain wird überprüft                                                | IP_CHECK           | Yes                | Yes                                          |
+| SHOUTRRR URL: Deine Shoutrrr URL als Benachrichtigungsdienst z.b ( gotify,discord,telegram,email) | SHOUTRRR_URL       | ------------------ | [Shoutrrr-Beispiele](#shoutrrr-beispiele)    |
+| SHOUTRRR_SKIP_TEST: Beim Start des Containers wird keine Testnachricht gesendet                   | SHOUTRRR_SKIP_TEST | no                 | no     (yes oder no)                         |
 
 * * *
 
