@@ -111,7 +111,7 @@ services:
 | IP CHECK: Die IP Adresse der Domain wird überprüft                                                | IP_CHECK           | Yes                | Yes                                          |
 | SHOUTRRR URL: Deine Shoutrrr URL als Benachrichtigungsdienst z.b ( gotify,discord,telegram,email) | SHOUTRRR_URL       | ------------------ | [Shoutrrr-Beispiele](#shoutrrr-beispiele)    |
 | SHOUTRRR_SKIP_TEST: Beim Start des Containers wird keine Testnachricht gesendet                   | SHOUTRRR_SKIP_TEST | no                 | no     (yes oder no)                         |
-| NAME_SERVER: : Der Nameserver, um die IP-Adresse Ihrer Domain zu überprüfen                       | NAME_SERVER        | ns1.ddnss.de       | ns1.ddnss.de;ns3.ddnss.de                    |
+| NAME_SERVER: : Der Nameserver, um die IP-Adresse Ihrer Domain zu überprüfen                       | NAME_SERVER        | ns1.ddnss.de       | ns1.ddnss.de (ns3.ddnss.de)                  |
 
 * * *
 
