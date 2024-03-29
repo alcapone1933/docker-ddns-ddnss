@@ -59,6 +59,7 @@ docker run -d \
     -e "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org" \
     -e "SHOUTRRR_URL=" \
     -e "SHOUTRRR_SKIP_TEST=no" \
+    -e "NAME_SERVER=ns1.ddnss.de" \
 
 ```
 
@@ -81,6 +82,7 @@ services:
       - "DOMAIN_KEY=1234567890abcdefghijklmnopqrstuv"
       # - "SHOUTRRR_URL="
       # - "SHOUTRRR_SKIP_TEST=no"
+      # - "NAME_SERVER=ns1.ddnss.de"
 ```
 
 &nbsp;
@@ -109,6 +111,7 @@ services:
 | IP CHECK: Die IP Adresse der Domain wird überprüft                                                | IP_CHECK           | Yes                | Yes                                          |
 | SHOUTRRR URL: Deine Shoutrrr URL als Benachrichtigungsdienst z.b ( gotify,discord,telegram,email) | SHOUTRRR_URL       | ------------------ | [Shoutrrr-Beispiele](#shoutrrr-beispiele)    |
 | SHOUTRRR_SKIP_TEST: Beim Start des Containers wird keine Testnachricht gesendet                   | SHOUTRRR_SKIP_TEST | no                 | no     (yes oder no)                         |
+| NAME_SERVER: : Der Nameserver, um die IP-Adresse Ihrer Domain zu überprüfen                       | NAME_SERVER        | ns1.ddnss.de       | ns1.ddnss.de;ns3.ddnss.de                    |
 
 * * *
 

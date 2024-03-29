@@ -4,7 +4,7 @@ LABEL maintainer="alcapone1933 <alcapone1933@cosanostra-cloud.de>" \
       org.opencontainers.image.created="$(date +%Y-%m-%d\ %H:%M)" \
       org.opencontainers.image.authors="alcapone1933 <alcapone1933@cosanostra-cloud.de>" \
       org.opencontainers.image.url="https://hub.docker.com/r/alcapone1933/ddns-ddnss" \
-      org.opencontainers.image.version="v0.0.4" \
+      org.opencontainers.image.version="v0.0.5" \
       org.opencontainers.image.ref.name="alcapone1933/ddns-ddnss" \
       org.opencontainers.image.title="DDNS Updater ddnss.de" \
       org.opencontainers.image.description="DDNS Updater fuer ddnss.de ONLY IPV4"
@@ -12,11 +12,12 @@ LABEL maintainer="alcapone1933 <alcapone1933@cosanostra-cloud.de>" \
 ENV TZ=Europe/Berlin \
     CRON_TIME="*/15 * * * *" \
     CRON_TIME_DIG="*/30 * * * *" \
-    VERSION="v0.0.4" \
-    CURL_USER_AGENT="docker-ddns-ipv64/version=v0.0.4 github.com/alcapone1933/docker-ddns-ddnss" \
+    VERSION="v0.0.5" \
+    CURL_USER_AGENT="docker-ddns-ipv64/version=v0.0.5 github.com/alcapone1933/docker-ddns-ddnss" \
     SHOUTRRR_URL="" \
     SHOUTRRR_SKIP_TEST="no" \
-    IP_CHECK="Yes"
+    IP_CHECK="Yes" \
+    NAME_SERVER="ns1.ddnss.de"
 
 RUN apk add --update --no-cache tzdata curl bash tini bind-tools jq && \
     rm -rf /var/cache/apk/*

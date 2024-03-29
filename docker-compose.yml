@@ -4,7 +4,7 @@ services:
     # build:
       # dockerfile: ./Dockerfile
     image: alcapone1933/ddns-ddnss:latest
-    # image: alcapone1933/ddns-ddnss:v0.0.4
+    # image: alcapone1933/ddns-ddnss:v0.0.5
     container_name: ddns-ddnss
     restart: always
     # volumes:
@@ -19,7 +19,7 @@ services:
       - "IP_CHECK=Yes"
       # - "SHOUTRRR_URL="
       # - "SHOUTRRR_SKIP_TEST=no"
-
+      # - "NAME_SERVER=ns1.ddnss.de"
 # volumes:
   # data:
     # name: ddns-ddnss_data

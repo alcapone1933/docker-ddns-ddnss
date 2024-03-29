@@ -4,10 +4,10 @@ DATUM=$(date +%Y-%m-%d\ %H:%M:%S)
 if ! curl -4sf --user-agent "${CURL_USER_AGENT}" "https://ddnss.de" 2>&1 > /dev/null; then
     echo "$DATUM  FEHLER !!!  - 404 Sie haben kein Netzwerk oder Internetzugang oder die Webseite ddnss.de ist nicht erreichbar"
     STATUS="OK"
-    NAMESERVER_CHECK=$(dig +timeout=1 @ns1.ddnss.de 2> /dev/null)
+    NAMESERVER_CHECK=$(dig +timeout=1 @${NAME_SERVER} 2> /dev/null)
     echo "$NAMESERVER_CHECK" | grep -s -q "timed out" && { NAMESERVER_CHECK="Timeout" ; STATUS="FAIL" ; }
     if [ "${STATUS}" = "FAIL" ] ; then
-        echo "$DATUM  FEHLER !!!  - 404 NAMESERVER ns1.ddnss.de ist nicht ist nicht erreichbar. Sie haben kein Netzwerk oder Internetzugang"
+        echo "$DATUM  FEHLER !!!  - 404 NAMESERVER ${NAME_SERVER} ist nicht ist nicht erreichbar. Sie haben kein Netzwerk oder Internetzugang"
         echo "============================================================================================="
     fi
     if ! curl -4sf "https://google.de" 2>&1 > /dev/null; then
@@ -96,10 +96,10 @@ DATUM=$(date +%Y-%m-%d\ %H:%M:%S)
 UPDIP=$(cat $PFAD/updip.txt)
 # IP=$(curl -4sSL --user-agent "${CURL_USER_AGENT}" "https://ddnss.de/meineip.php" | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}')
 IP=$(curl -4sSL --user-agent "${CURL_USER_AGENT}" "https://ddnss.de/meineip.php" | grep "IP:" | cut -d ">" -f2 | cut -d "<" -f1)
-DOMAIN_CHECK=$(for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do dig +short ${DOMAIN} A @ns1.ddnss.de; done | tail -n 1)
+DOMAIN_CHECK=$(for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do dig +short ${DOMAIN} A @${NAME_SERVER}; done | tail -n 1)
 sleep 1
 if [ "$IP" == "$DOMAIN_CHECK" ]; then
-    for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "$DATUM  CHECK       - DOMAIN HAT DEN A-RECORD=`dig +noall +answer ${DOMAIN} A @ns1.ddnss.de`"; done
+    for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "$DATUM  CHECK       - DOMAIN HAT DEN A-RECORD=`dig +noall +answer ${DOMAIN} A @${NAME_SERVER}`"; done
 else
     echo "$DATUM  UPDATE !!! ..."
     echo "$DATUM  UPDATE !!!  - NACHEINTRAG DIE IP WIRD NOCH EINMAL GESETZT"
@@ -115,7 +115,7 @@ else
         fi
         echo "$IP" > $PFAD/updip.txt
         sleep 15
-        for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "$DATUM  NACHEINTRAG - DOMAIN HAT DEN A-RECORD=`dig +noall +answer ${DOMAIN} A @ns1.ddnss.de`"; done
+        for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "$DATUM  NACHEINTRAG - DOMAIN HAT DEN A-RECORD=`dig +noall +answer ${DOMAIN} A @${NAME_SERVER}`"; done
     else
         echo "$DATUM  FEHLER !!!  - UPDATE IP=$IP WURDE NICHT AN DDNSS.DE GESENTET"
         if [ -z "${SHOUTRRR_URL:-}" ] ; then
