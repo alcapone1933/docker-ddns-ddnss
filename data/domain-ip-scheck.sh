@@ -15,6 +15,6 @@ fi
 
 for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g");
 do
-    echo "$DATUM  IP CHECK    - Deine DOMAIN ${DOMAIN} HAT DIE IP=`dig +short ${DOMAIN} A @${NAME_SERVER}`" >> /var/log/cron.log 2>&1
+    echo "$DATUM  IP CHECK    - Deine DOMAIN ${DOMAIN} HAT DIE IP=`dig +short ${DOMAIN} A @${NAME_SERVER}`" >> /data/log/cron.log 2>&1
 done
 echo "============================================================================================="

@@ -60,7 +60,8 @@ docker run -d \
     -e "SHOUTRRR_URL=" \
     -e "SHOUTRRR_SKIP_TEST=no" \
     -e "NAME_SERVER=ns1.ddnss.de" \
-
+    -e "PUID=1000" \
+    -e "PGID=1000" \
 ```
 
 ## Docker Compose
@@ -83,6 +84,8 @@ services:
       # - "SHOUTRRR_URL="
       # - "SHOUTRRR_SKIP_TEST=no"
       # - "NAME_SERVER=ns1.ddnss.de"
+      # - "PUID=1000"
+      # - "PGID=1000"
 ```
 
 &nbsp;
@@ -93,7 +96,7 @@ services:
 
 | Name (Beschreibung) #Optional | Wert    | Standard              |
 | ----------------------------- | ------- | --------------------- |
-| Speicherort logs und script   | volume  | ddns-ddnss_data:/data |
+| Speicherort logs              | volume  | ddns-ddnss_data:/data |
 |                               |         | /dein Pfad:/data      |
 
 &nbsp;
@@ -112,6 +115,8 @@ services:
 | SHOUTRRR URL: Deine Shoutrrr URL als Benachrichtigungsdienst z.b ( gotify,discord,telegram,email) | SHOUTRRR_URL       | ------------------ | [Shoutrrr-Beispiele](#shoutrrr-beispiele)    |
 | SHOUTRRR_SKIP_TEST: Beim Start des Containers wird keine Testnachricht gesendet                   | SHOUTRRR_SKIP_TEST | no                 | no     (yes oder no)                         |
 | NAME_SERVER: : Der Nameserver, um die IP-Adresse Ihrer Domain zu überprüfen                       | NAME_SERVER        | ns1.ddnss.de       | ns1.ddnss.de (ns3.ddnss.de)                  |
+| PUID: Rechte für Benutzer-ID des Ornder /data im Container                                        | PUID               | 0                  | 1000                                         |
+| PGID: Rechte für Gruppen-ID des Ornder /data im Container                                         | PGID               | 0                  | 1000                                         |
 
 * * *
 

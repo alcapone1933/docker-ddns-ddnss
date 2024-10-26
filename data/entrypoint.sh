@@ -4,6 +4,7 @@
 DATUM=$(date +%Y-%m-%d\ %H:%M:%S)
 # cleanup
 cleanup() {
+    echo "============================================================================================="
     echo "================================  STOP DDNS UPDATER DDNSS.DE ================================"
     echo "============================================================================================="
     echo "=========================  ######     #######    #######    #######  ========================"
@@ -19,9 +20,8 @@ cleanup() {
 
 # Trap SIGTERM
 trap 'cleanup' SIGTERM
-
-echo -n "" > /var/log/cron.log
-sleep 10
+sleep 5
+echo "=============================================================================================="
 echo "================================ START DDNS UPDATER DDNSS.DE ================================"
 echo "============================================================================================="
 echo "================  ########     ########     ##    ##     ######      ######   ==============="
@@ -33,6 +33,32 @@ echo "================  ##     ##    ##     ##    ##   ###    ##    ##    ##    
 echo "================  ########     ########     ##    ##     ######      ######   ==============="
 echo "============================================================================================="
 
+# echo -n "" > /data/log/cron.log
+sleep 5
+################################
+# Set user and group ID
+if [ "$PUID" != "0" ] || [ "$PGID" != "0" ]; then
+    chown -R "$PUID":"$PGID" /data
+    if [ ! -d "/data/log" ]; then
+        install -d -o $PUID -g $PGID -m 755 /data/log
+    fi
+    if [ ! -f "/data/log/cron.log" ]; then
+        install -o $PUID -g $PGID -m 644 /dev/null /data/log/cron.log
+    fi
+    if [ ! -f "/data/updip.txt" ]; then
+        install -o $PUID -g $PGID -m 644 /dev/null /data/updip.txt
+    fi
+    echo "$DATUM  RECHTE      - Ornder /data UID: $PUID and GID: $PGID"
+fi
+if [ ! -d "/data/log" ]; then
+    install -d -o $PUID -g $PGID -m 755 /data/log
+fi
+if [ ! -f "/data/log/cron.log" ]; then
+    install -o $PUID -g $PGID -m 644 /dev/null /data/log/cron.log
+fi
+################################
+MAX_LINES=1 /usr/local/bin/log-rotate.sh
+################################
 if [ -z "${DOMAIN_DDNSS:-}" ] ; then
     echo "$DATUM  DOMAIN      - Sie haben keine DOMAIN gesetzt, schauen die unter https://ddnss.de/ua/vhosts_list.php nach bei vHostname"
     sleep infinity
@@ -102,37 +128,44 @@ fi
 IP=$(curl -4sSL --user-agent "${CURL_USER_AGENT}" "https://ddnss.de/meineip.php" | grep "IP:" | cut -d ">" -f2 | cut -d "<" -f1)
 
 function Domain_default() {
-CHECK=$(curl -4sSLi --user-agent "${CURL_USER_AGENT}" "https://ddnss.de/upd.php?key=${DOMAIN_KEY}&host=${DOMAIN_DDNSS}" | grep -o "good" | tail -n1)
-if [ "$CHECK" = "good" ] ; then
-    echo "$DATUM  CHECK       - Die Angaben sind richtig gesetzt: DOMAIN und DOMAIN KEY"
-    sleep 5
-    if [[ "$IP_CHECK" =~ (YES|yes|Yes) ]] ; then
-        for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "$DATUM  IP CHECK    - Deine DOMAIN ${DOMAIN} HAT DIE IP=`dig +short ${DOMAIN} A @${NAME_SERVER}`"; done
+if [ -f /etc/.firstrun ]; then
+    CHECK=$(curl -4sSLi --user-agent "${CURL_USER_AGENT}" "https://ddnss.de/upd.php?key=${DOMAIN_KEY}&host=${DOMAIN_DDNSS}" | grep -o "good" | tail -n1)
+    if [ "$CHECK" = "good" ] ; then
+        echo "$DATUM  CHECK       - Die Angaben sind richtig gesetzt: DOMAIN und DOMAIN KEY"
+        sleep 5
+        if [[ "$IP_CHECK" =~ (YES|yes|Yes) ]] ; then
+            for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "$DATUM  IP CHECK    - Deine DOMAIN ${DOMAIN} HAT DIE IP=`dig +short ${DOMAIN} A @${NAME_SERVER}`"; done
+        else
+            echo > /dev/null
+        fi   
+        echo "${IP}" > /data/updip.txt
+        sleep 2
     else
-        echo > /dev/null
-    fi   
-    echo "${IP}" > /data/updip.txt
-    sleep 2
+        echo "$DATUM  FEHLER !!!  - Die Angaben sind falsch  gesetzt: DOMAIN oder DOMAIN KEY"
+        echo "$DATUM    INFO !!!  - Stoppen sie den Container und Starten sie den Container mit den richtigen Angaben erneut"
+        return
+    fi
 else
-    echo "$DATUM  FEHLER !!!  - Die Angaben sind falsch  gesetzt: DOMAIN oder DOMAIN KEY"
-    echo "$DATUM    INFO !!!  - Stoppen sie den Container und Starten sie den Container mit den richtigen Angaben erneut"
-    return
+    echo "$DATUM  CHECK       - Die Angaben sind richtig gesetzt: DOMAIN und DOMAIN KEY"
 fi
-echo "${CRON_TIME} /bin/bash /data/ddns-update.sh >> /var/log/cron.log 2>&1" > /etc/cron.d/container_cronjob
+
+echo "${CRON_TIME} /bin/bash /usr/local/bin/ddns-update.sh >> /data/log/cron.log 2>&1" > /etc/cron.d/container_cronjob
 if [[ "$IP_CHECK" =~ (YES|yes|Yes) ]] ; then
-    echo "${CRON_TIME_DIG} sleep 20 && /bin/bash /data/domain-ip-scheck.sh >> /var/log/cron.log 2>&1" >> /etc/cron.d/container_cronjob
+    echo "${CRON_TIME_DIG} sleep 20 && /bin/bash /usr/local/bin/domain-ip-scheck.sh >> /data/log/cron.log 2>&1" >> /etc/cron.d/container_cronjob
 else
     echo > /dev/null
 fi
-# echo "$CRON_TIME_DIG" 'sleep 20 && for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "`date +%Y-%m-%d\ %H:%M:%S`  IP CHECK    - Deine DOMAIN ${DOMAIN} HAT DIE IP=`dig +short ${DOMAIN} A @${NAME_SERVER}`" >> /var/log/cron.log 2>&1; done' >> /etc/cron.d/container_cronjob
+# echo "$CRON_TIME_DIG" 'sleep 20 && for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "`date +%Y-%m-%d\ %H:%M:%S`  IP CHECK    - Deine DOMAIN ${DOMAIN} HAT DIE IP=`dig +short ${DOMAIN} A @${NAME_SERVER}`" >> /data/log/cron.log 2>&1; done' >> /etc/cron.d/container_cronjob
 }
 
 Domain_default
 
+echo "*/30 * * * * /usr/local/bin/log-rotate.sh" >> /etc/cron.d/container_cronjob
+
 /usr/bin/crontab /etc/cron.d/container_cronjob
 /usr/sbin/crond
 echo "============================================================================================="
-set tail -f /var/log/cron.log "$@"
+set tail -f /data/log/cron.log "$@"
 exec "$@" &
 
 wait $!
