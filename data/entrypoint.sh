@@ -140,6 +140,7 @@ if [ -f /etc/.firstrun ]; then
         fi   
         echo "${IP}" > /data/updip.txt
         sleep 2
+        rm /etc/.firstrun
     else
         echo "$DATUM  FEHLER !!!  - Die Angaben sind falsch  gesetzt: DOMAIN oder DOMAIN KEY"
         echo "$DATUM    INFO !!!  - Stoppen sie den Container und Starten sie den Container mit den richtigen Angaben erneut"
