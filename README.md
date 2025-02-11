@@ -52,14 +52,16 @@ docker run -d \
     --name ddns-ddnss \
     -e "CRON_TIME=*/15 * * * *" \
     -e "CRON_TIME_DIG=*/30 * * * *" \
-    -e "DOMAIN_DDNSS=deine-domain.ddnss.de" \
     -e "DOMAIN_KEY=1234567890abcdefghijklmnopqrstuv" \
+    -e "DOMAIN_DDNSS=deine-domain.ddnss.de" \
     alcapone1933/ddns-ddnss:latest
 
     -e "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org" \
+    -e "IP_CHECK=yes" \
     -e "SHOUTRRR_URL=" \
     -e "SHOUTRRR_SKIP_TEST=no" \
     -e "NAME_SERVER=ns1.ddnss.de" \
+    -e "NETWORK_CHECK=yes" \
     -e "PUID=1000" \
     -e "PGID=1000" \
 ```
@@ -67,7 +69,6 @@ docker run -d \
 ## Docker Compose
 
 ```yaml
-version: "3.9"
 services:
   ddns-ddnss:
     image: alcapone1933/ddns-ddnss:latest
@@ -77,13 +78,15 @@ services:
       - "TZ=Europe/Berlin"
       - "CRON_TIME=*/15 * * * *"
       - "CRON_TIME_DIG=*/30 * * * *"
+      - "DOMAIN_KEY=1234567890abcdefghijklmnopqrstuv"
       - "DOMAIN_DDNSS=deine-domain.ddnss.de"
       #  Wenn Du mehrere DOMAINS (vHostname) eintragen willst, bitte mit Komma trennen:
       # - "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org"
-      - "DOMAIN_KEY=1234567890abcdefghijklmnopqrstuv"
+      # - "IP_CHECK=yes"
       # - "SHOUTRRR_URL="
       # - "SHOUTRRR_SKIP_TEST=no"
       # - "NAME_SERVER=ns1.ddnss.de"
+      # - "NETWORK_CHECK=yes"
       # - "PUID=1000"
       # - "PGID=1000"
 ```
@@ -111,10 +114,11 @@ services:
 | DOMAIN KEY: DEIN KEY bzw. DynDNS Update Key zu finden unter     https://ddnss.de/ua/index.php     | DOMAIN_KEY         | ------------------ | 1234567890abcdefghijklmnopqrstuv             |
 | DEINE DOMAIN:  z.b. deine-domain.ddnss.de zu finden unter https://ddnss.de/ua/vhosts_list.php     | DOMAIN_DDNSS       | ------------------ | deine-domain.ddnss.de                        |
 | DEINE DOMAINS: z.b. deine-domain.ddnss.de,deine-domain.ddnss.org                                  | DOMAIN_DDNSS       | ------------------ | deine-domain.ddnss.de,deine-domain.ddnss.org |
-| IP CHECK: Die IP Adresse der Domain wird überprüft                                                | IP_CHECK           | Yes                | Yes                                          |
+| IP CHECK: Die IP Adresse der Domain wird überprüft                                                | IP_CHECK           | yes                | yes    (yes oder no)                         |
 | SHOUTRRR URL: Deine Shoutrrr URL als Benachrichtigungsdienst z.b ( gotify,discord,telegram,email) | SHOUTRRR_URL       | ------------------ | [Shoutrrr-Beispiele](#shoutrrr-beispiele)    |
-| SHOUTRRR_SKIP_TEST: Beim Start des Containers wird keine Testnachricht gesendet                   | SHOUTRRR_SKIP_TEST | no                 | no     (yes oder no)                         |
+| SHOUTRRR SKIP TEST: Beim Start des Containers wird keine Testnachricht gesendet                   | SHOUTRRR_SKIP_TEST | no                 | no     (yes oder no)                         |
 | NAME_SERVER: : Der Nameserver, um die IP-Adresse Ihrer Domain zu überprüfen                       | NAME_SERVER        | ns1.ddnss.de       | ns1.ddnss.de (ns3.ddnss.de)                  |
+| NETWORK CHECK: Es wird die Verbidung zu ddnss.de getestet                                         | NETWORK_CHECK      | yes                | yes    (yes oder no)                         |
 | PUID: Rechte für Benutzer-ID des Ornder /data im Container                                        | PUID               | 0                  | 1000                                         |
 | PGID: Rechte für Gruppen-ID des Ornder /data im Container                                         | PGID               | 0                  | 1000                                         |
 

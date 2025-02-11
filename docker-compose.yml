@@ -1,10 +1,9 @@
-version: "3.9"
 services:
   ddns-ddnss:
     # build:
       # dockerfile: ./Dockerfile
     image: alcapone1933/ddns-ddnss:latest
-    # image: alcapone1933/ddns-ddnss:v0.0.6
+    # image: alcapone1933/ddns-ddnss:v0.0.7
     container_name: ddns-ddnss
     restart: always
     # volumes:
@@ -13,13 +12,15 @@ services:
       - "TZ=Europe/Berlin"
       - "CRON_TIME=*/15 * * * *"
       - "CRON_TIME_DIG=*/30 * * * *"
-      - "DOMAIN_DDNSS=deine-domain.ddnss.de"
-      # - "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org"
       - "DOMAIN_KEY=1234567890abcdefghijklmnopqrstuv"
-      - "IP_CHECK=Yes"
+      - "DOMAIN_DDNSS=deine-domain.ddnss.de"
+      #  Wenn Du mehrere DOMAINS (vHostname) eintragen willst, bitte mit Komma trennen:
+      # - "DOMAIN_DDNSS=deine-domain.ddnss.de,deine-domain.ddnss.org"
+      # - "IP_CHECK=yes"
       # - "SHOUTRRR_URL="
       # - "SHOUTRRR_SKIP_TEST=no"
       # - "NAME_SERVER=ns1.ddnss.de"
+      # - "NETWORK_CHECK=yes"
       # - "PUID=1000"
       # - "PGID=1000"
 # volumes:
