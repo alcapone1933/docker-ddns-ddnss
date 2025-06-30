@@ -101,13 +101,13 @@ else
         fi
         echo "$IP" > $PFAD/updip.txt
     else
-        echo "$DATUM  FEHLER !!!  - UPDATE IP=$IP WURDE NICHT AN DDNSS.DE GESENTET"
+        echo "$DATUM  FEHLER !!!  - UPDATE IP=$IP WURDE NICHT AN DDNSS.DE GESENDET"
         if [ -z "${SHOUTRRR_URL:-}" ] ; then
              echo > /dev/null
         else
             echo "$DATUM  SHOUTRRR    - SHOUTRRR NACHRICHT wird gesendet"
             DOMAIN_NOTIFY=$(for DOMAIN in $(echo "${DOMAIN_DDNSS}" | sed -e "s/,/ /g"); do echo "DOMAIN: ${DOMAIN} "; done)
-            if ! /usr/local/bin/shoutrrr send --url "${SHOUTRRR_URL}" --message "`echo -e "$DATUM    INFO !!! \n\nUPDATE IP=$IP WURDE NICHT AN DDNSS.DE GESENTET \n${DOMAIN_NOTIFY}"`" 2>/dev/null; then
+            if ! /usr/local/bin/shoutrrr send --url "${SHOUTRRR_URL}" --message "`echo -e "$DATUM    INFO !!! \n\nUPDATE IP=$IP WURDE NICHT AN DDNSS.DE GESENDET \n${DOMAIN_NOTIFY}"`" 2>/dev/null; then
                 echo "$DATUM  FEHLER !!!  - NACHRICHT konnte nicht gesendet werden"
             else
                 echo "$DATUM  SHOUTRRR    - SHOUTRRR NACHRICHT wurde gesendet"
