@@ -131,7 +131,29 @@ else
 fi
 
 # IP=$(curl -4sSL --user-agent "${CURL_USER_AGENT}" "https://ddnss.de/meineip.php" | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}')
-IP=$(curl -4sSL --user-agent "${CURL_USER_AGENT}" "https://ddnss.de/meineip.php" | grep "IP:" | cut -d ">" -f2 | cut -d "<" -f1)
+# IP=$(curl -4sSL --user-agent "${CURL_USER_AGENT}" "https://ddnss.de/meineip.php" | grep "IP:" | cut -d ">" -f2 | cut -d "<" -f1)
+PRIMARY_IP_SOURCES=(
+    "https://ipinfo.io/ip"
+    "https://ifconfig.me"
+    "https://ifconfig.co/ip"
+    "https://icanhazip.com"
+    "https://api.ipify.org"
+    "https://ipecho.net/plain"
+    "https://ident.me"
+    "https://checkip.amazonaws.com"
+    "https://myexternalip.com/raw"
+    "https://wtfismyip.com/text"
+    "https://ip.tyk.nu"
+    "https://ipv4.icanhazip.com"
+)
+for url_ip in "${PRIMARY_IP_SOURCES[@]}"; do
+    response=$(curl -4sSL --connect-timeout 2 --max-time 3 --user-agent "${CURL_USER_AGENT}" "$url_ip" 2>/dev/null)
+    if [[ "$response" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        export IP_SOURCE="$url_ip"
+        break
+    fi
+done
+IP=$(curl -4sSL --user-agent "${CURL_USER_AGENT}" "$IP_SOURCE" 2>/dev/null)
 
 function Domain_default() {
 if [ -f /etc/.firstrun ]; then

@@ -60,7 +60,7 @@ docker run -d \
     -e "IP_CHECK=yes" \
     -e "SHOUTRRR_URL=" \
     -e "SHOUTRRR_SKIP_TEST=no" \
-    -e "NAME_SERVER=ns1.ddnss.de" \
+    -e "NAME_SERVER=1.1.1.1" \
     -e "NETWORK_CHECK=yes" \
     -e "PUID=1000" \
     -e "PGID=1000" \
@@ -85,7 +85,7 @@ services:
       # - "IP_CHECK=yes"
       # - "SHOUTRRR_URL="
       # - "SHOUTRRR_SKIP_TEST=no"
-      # - "NAME_SERVER=ns1.ddnss.de"
+      # - "NAME_SERVER=1.1.1.1"
       # - "NETWORK_CHECK=yes"
       # - "PUID=1000"
       # - "PGID=1000"
@@ -117,7 +117,7 @@ services:
 | IP CHECK: Die IP Adresse der Domain wird überprüft                                                | IP_CHECK           | yes                | yes    (yes oder no)                         |
 | SHOUTRRR URL: Deine Shoutrrr URL als Benachrichtigungsdienst z.b ( gotify,discord,telegram,email) | SHOUTRRR_URL       | ------------------ | [Shoutrrr-Beispiele](#shoutrrr-beispiele)    |
 | SHOUTRRR SKIP TEST: Beim Start des Containers wird keine Testnachricht gesendet                   | SHOUTRRR_SKIP_TEST | no                 | no     (yes oder no)                         |
-| NAME_SERVER: : Der Nameserver, um die IP-Adresse Ihrer Domain zu überprüfen                       | NAME_SERVER        | ns1.ddnss.de       | ns1.ddnss.de (ns3.ddnss.de)                  |
+| NAME_SERVER: : Der Nameserver, um die IP-Adresse Ihrer Domain zu überprüfen                       | NAME_SERVER        | 1.1.1.1            | ns1.ddnss.de (ns3.ddnss.de)                  |
 | NETWORK CHECK: Es wird die Verbidung zu ddnss.de getestet                                         | NETWORK_CHECK      | yes                | yes    (yes oder no)                         |
 | PUID: Rechte für Benutzer-ID des Ornder /data im Container                                        | PUID               | 0                  | 1000                                         |
 | PGID: Rechte für Gruppen-ID des Ornder /data im Container                                         | PGID               | 0                  | 1000                                         |
